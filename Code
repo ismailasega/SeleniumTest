@@ -1,49 +1,24 @@
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import unittest
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
-/**
- * Created by burakergoren
- */
-public class JenkinsDemo
-{
-    private static String Base_Url = "https://www.facebook.com";
-    private WebDriver driver;
+class DevOpsProcert(unittest.TestCase):
 
-    @Before
-    public void setUp() 
-    {
-        driver = new ChromeDriver();
-        driver.get(Base_Url);
-    }
+    def setUp(self):
+        self.driver = webdriver.Chrome()
 
-    @After
-    public void after()
-    {
-        driver.quit();
-    }
+    def test_search_in_python_org(self):
+        driver = self.driver
+        driver.get("https://github.com/ismailasega/DevOps-procert")
+        self.assertIn("asega", driver.title)
+        elem = driver.find_element_by_name("x")
+        elem.send_keys("proce")
+        elem.send_keys(Keys.RETURN)
+        assert "No results found." not in driver.page_source
 
-    @Test
-    public void testCasePassed()
-    {
-        Assert.assertTrue(driver.findElement(By.xpath("//form[@id='login_form']")).isDisplayed());
-    }
 
-    @Test
-    public void testCaseFailed()
-    {
-        Assert.assertTrue(driver.findElement(By.xpath("//form[@id='failed case']")).isDisplayed());
-    }
+    def tearDown(self):
+        self.driver.close()
 
-    @Ignore
-    @Test
-    public void testCaseIgnored()
-    {
-        Assert.assertTrue(driver.findElement(By.xpath("//form[@id='ignored case']")).isDisplayed());
-    }
-}
+if __name__ == "__main__":
+    unittest.main()
